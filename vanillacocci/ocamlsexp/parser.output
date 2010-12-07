@@ -1,0 +1,231 @@
+   0  $accept : %entry% $end
+
+   1  sexp : STRING
+   2       | LPAREN RPAREN
+   3       | LPAREN rev_sexps_aux RPAREN
+   4       | error
+
+   5  sexp_opt : sexp
+   6           | EOF
+
+   7  rev_sexps_aux : sexp
+   8                | rev_sexps_aux sexp
+
+   9  rev_sexps : rev_sexps_aux
+  10            | EOF
+
+  11  sexps : rev_sexps_aux
+  12        | EOF
+
+  13  %entry% : '\001' sexp
+  14          | '\002' sexp_opt
+  15          | '\003' sexps
+  16          | '\004' rev_sexps
+
+state 0
+	$accept : . %entry% $end  (0)
+
+	'\001'  shift 1
+	'\002'  shift 2
+	'\003'  shift 3
+	'\004'  shift 4
+	.  error
+
+	%entry%  goto 5
+
+
+state 1
+	%entry% : '\001' . sexp  (13)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	.  error
+
+	sexp  goto 9
+
+
+state 2
+	%entry% : '\002' . sexp_opt  (14)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	EOF  shift 10
+	.  error
+
+	sexp  goto 11
+	sexp_opt  goto 12
+
+
+state 3
+	%entry% : '\003' . sexps  (15)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	EOF  shift 13
+	.  error
+
+	sexp  goto 14
+	sexps  goto 15
+	rev_sexps_aux  goto 16
+
+
+state 4
+	%entry% : '\004' . rev_sexps  (16)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	EOF  shift 17
+	.  error
+
+	sexp  goto 14
+	rev_sexps  goto 18
+	rev_sexps_aux  goto 19
+
+
+state 5
+	$accept : %entry% . $end  (0)
+
+	$end  accept
+
+
+state 6
+	sexp : error .  (4)
+
+	.  reduce 4
+
+
+state 7
+	sexp : STRING .  (1)
+
+	.  reduce 1
+
+
+state 8
+	sexp : LPAREN . RPAREN  (2)
+	sexp : LPAREN . rev_sexps_aux RPAREN  (3)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	RPAREN  shift 20
+	.  error
+
+	sexp  goto 14
+	rev_sexps_aux  goto 21
+
+
+state 9
+	%entry% : '\001' sexp .  (13)
+
+	.  reduce 13
+
+
+state 10
+	sexp_opt : EOF .  (6)
+
+	.  reduce 6
+
+
+state 11
+	sexp_opt : sexp .  (5)
+
+	.  reduce 5
+
+
+state 12
+	%entry% : '\002' sexp_opt .  (14)
+
+	.  reduce 14
+
+
+state 13
+	sexps : EOF .  (12)
+
+	.  reduce 12
+
+
+state 14
+	rev_sexps_aux : sexp .  (7)
+
+	.  reduce 7
+
+
+state 15
+	%entry% : '\003' sexps .  (15)
+
+	.  reduce 15
+
+
+state 16
+	rev_sexps_aux : rev_sexps_aux . sexp  (8)
+	sexps : rev_sexps_aux .  (11)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	$end  reduce 11
+
+	sexp  goto 22
+
+
+state 17
+	rev_sexps : EOF .  (10)
+
+	.  reduce 10
+
+
+state 18
+	%entry% : '\004' rev_sexps .  (16)
+
+	.  reduce 16
+
+
+state 19
+	rev_sexps_aux : rev_sexps_aux . sexp  (8)
+	rev_sexps : rev_sexps_aux .  (9)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	$end  reduce 9
+
+	sexp  goto 22
+
+
+state 20
+	sexp : LPAREN RPAREN .  (2)
+
+	.  reduce 2
+
+
+state 21
+	sexp : LPAREN rev_sexps_aux . RPAREN  (3)
+	rev_sexps_aux : rev_sexps_aux . sexp  (8)
+
+	error  shift 6
+	STRING  shift 7
+	LPAREN  shift 8
+	RPAREN  shift 23
+	.  error
+
+	sexp  goto 22
+
+
+state 22
+	rev_sexps_aux : rev_sexps_aux sexp .  (8)
+
+	.  reduce 8
+
+
+state 23
+	sexp : LPAREN rev_sexps_aux RPAREN .  (3)
+
+	.  reduce 3
+
+
+10 terminals, 7 nonterminals
+17 grammar rules, 24 states

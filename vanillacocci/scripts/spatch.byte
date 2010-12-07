@@ -1,0 +1,21 @@
+#!/bin/sh
+
+COCCINELLE_HOME=${COCCINELLE_HOME:=/usr/local/share/coccinelle}
+#echo setting COCCINELLE_HOME=${COCCINELLE_HOME:=/usr/local/share/coccinelle}
+
+if [ ! -r "$COCCINELLE_HOME"/standard.iso ] ; then
+    echo "There is no standard.iso in /usr/local/share/coccinelle."
+    echo "Are you sure you run a properly installed version of spatch ?\n"
+else
+
+ export COCCINELLE_HOME
+ export LD_LIBRARY_PATH="/usr/local/lib:$LD_LIBRARY_PATH"
+ export PYTHONPATH="$COCCINELLE_HOME/python:$PYTHONPATH"
+
+# echo setting LD_LIBRARY_PATH="$LD_LIBRARY_PATH"
+# echo setting PYTHONPATH="$PYTHONPATH"
+
+fi
+
+"$COCCINELLE_HOME"/spatch "$@"
+
