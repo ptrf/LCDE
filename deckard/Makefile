@@ -1,23 +1,3 @@
-# VARIABLES
-#
-#
-#TARGET=deckard
-#
-#SRC=mail.ml
-#
-## system stuff
-#
-#SYSLIBS="str.cma unix.cma"
-#
-## cocci stuff
-#
-#COCCI="../vanillacocci"
-#
-#
-##LIBS="$(COCCI)/commons/
-#
-#MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c
-#INCLUDEDIRS=$(COCCI)/commons $(COCCI)/commons/ocamlextra $(COCCI)/globals $(COCCI)/commons/ocollection $(COCCI)/globals $(COCCI)/parsing_c
 
 ##############################################################################
 # Variables
@@ -91,59 +71,14 @@ rec.opt:
 $(EXEC): $(LIBS) $(OBJS)
 	$(OCAMLC) -o $@ $(SYSLIBS) $^
 
-#$(EXEC).opt: $(LIBS:.cma=.cmxa) $(OPTOBJS) 
-#	$(OCAMLOPT) -o $@ $(SYSLIBS:.cma=.cmxa) -ccopt -static $^
-#	$(OCAMLOPT) -o $@ $(SYSLIBS:.cma=.cmxa)  $^
-
 $(EXEC).top: $(LIBS) $(OBJS)
 	$(OCAMLMKTOP) -o $@ $(SYSLIBS) $^
 
 clean::
-#	rm -f $(TARGET) $(TARGET).opt $(TARGET).top
 	rm -f $(TARGET) $(TARGET).top
 
 clean::
 	set -e; for i in $(MAKESUBDIRS); do $(MAKE) -C $$i clean; done
-
-
-##############################################################################
-# Developer rules
-##############################################################################
-
-#test: $(TARGET)
-#	./$(TARGET) -testall
-#
-## -inline 0  to see all the functions in the profile.
-#forprofiling:
-#	$(MAKE) OPTFLAGS="-p -inline 0 " opt
-#
-#clean::
-#	rm -f gmon.out 
-#
-#tags:
-#	otags -no-mli-tags -r  .
-
-##############################################################################
-# Misc rules
-##############################################################################
-
-# each member of the project can have its own test.ml. this file is 
-# not under CVS.
-#test.ml: 
-#	echo "let foo_ctl () = failwith \"there is no foo_ctl formula\"" \
-#	  > test.ml
-
-#beforedepend:: test.ml
-
-
-#INC=$(dir $(shell which ocaml))
-#INCX=$(INC:/=)
-#INCY=$(dir $(INCX))
-#INCZ=$(INCY:/=)/lib/ocaml
-#
-#prim.o: prim.c
-#	gcc -c -o prim.o -I $(INCZ) prim.c
-
 
 ##############################################################################
 # Generic ocaml rules
@@ -168,9 +103,7 @@ clean::
 clean::
 	rm -f *~ .*~ *.exe #*#
 
-#beforedepend::
-
-#depend:: beforedepend genericp
+#depend:: genericp
 depend::
 	$(OCAMLDEP) *.mli *.ml > .depend
 	set -e; for i in $(MAKESUBDIRS); do $(MAKE) -C $$i depend; done
