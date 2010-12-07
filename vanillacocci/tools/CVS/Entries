@@ -1,0 +1,19 @@
+/.cvsignore/1.1/Thu Aug 26 14:18:38 2010//
+/Makefile/1.26/Sat Aug 28 06:17:10 2010//
+/README.splitpatch/1.2/Fri Aug 27 08:14:30 2010//
+/alloc_free.ml/1.6/Sun Mar 22 18:17:15 2009//
+/bridge.ml/1.9/Sat Aug 14 02:56:32 2010//
+/cocci-send-email.perl/1.1/Thu Aug 26 13:11:48 2010//
+/dir_stats.ml/1.4/Sat Mar 29 19:39:46 2008//
+/dumper.ml/1.1/Thu Aug  5 10:22:37 2010//
+/dumper.mli/1.1/Thu Aug  5 10:22:37 2010//
+/extract_c_and_res.ml/1.5/Thu Jan 28 14:23:49 2010//
+/generate_dependencies.ml/1.3/Thu Jan 28 14:23:49 2010//
+/gitgrep.ml/1.11/Fri Dec  7 07:02:45 2007//
+/gitsort.ml/1.4/Thu Jan 28 14:23:49 2010//
+/licensify.ml/1.9/Sun Jun  6 15:46:13 2010//
+/process_isoprofile.ml/1.1/Mon Oct 29 19:39:54 2007//
+/spp.ml/1.1/Mon May 18 07:37:49 2009//
+D/distributed////
+D/gengraph////
+/splitpatch.ml/1.9/Tue Nov 30 23:26:13 2010//

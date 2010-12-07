@@ -1,0 +1,19 @@
+/.cvsignore/1.1/Thu Oct  9 15:15:29 2008//
+/Makefile/1.7/Fri Sep 10 12:00:09 2010//
+/Makefile.in/1.1/Thu Mar 27 11:31:54 2008//
+/OCamlMakefile/1.1/Thu Mar 27 21:40:31 2008//
+/acinclude.m4/1.1/Thu Mar 27 11:31:54 2008//
+/aclocal.m4/1.1/Thu Mar 27 11:31:54 2008//
+/configure/1.1/Thu Mar 27 11:31:54 2008//
+/configure.in/1.1/Thu Mar 27 11:31:54 2008//
+/getprefix.py/1.1/Thu Mar 27 11:31:54 2008//
+/getversion.py/1.1/Thu Mar 27 11:31:54 2008//
+/license.txt/1.1/Thu Mar 27 11:31:54 2008//
+/modif-orig.txt/1.1/Fri Mar 28 15:06:55 2008//
+/ocamlobj.ml/1.1/Thu Mar 27 11:31:54 2008//
+/pycaml.html/1.1/Thu Mar 27 11:31:54 2008//
+/pycaml.ml/1.5/Sat Jul 24 21:01:46 2010//
+/pycaml_ml.c/1.7/Sat Jul 24 21:01:46 2010//
+/pycamltest.ml/1.2/Thu Jan 28 14:23:49 2010//
+/tupletest.ml/1.1/Thu Mar 27 11:31:55 2008//
+D
