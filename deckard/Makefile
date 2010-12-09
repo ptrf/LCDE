@@ -4,11 +4,13 @@
 ##############################################################################
 TARGET=deckard
 
-SRC=main.ml
+SRC=context.ml \
+	charv.ml \
+	reader.ml
 
 COCCI=../vanillacocci
 
-SYSLIBS=str.cma unix.cma
+SYSLIBS=str.cma unix.cma bigarray.cma nums.cma
 LIBS=$(COCCI)/commons/commons.cma $(COCCI)/globals/globals.cma $(COCCI)/parsing_c/parsing_c.cma
 
 MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c
