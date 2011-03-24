@@ -4,17 +4,23 @@
 ##############################################################################
 TARGET=deckard
 
-SRC=context.ml \
-	charv.ml \
-	reader.ml
+SRC=context.mli context.ml \
+	deckard_types.mli deckard_types.ml \
+	charv.mli charv.ml \
+	deckard_configuration.mli deckard_configuration.ml \
+	infixes.ml \
+	reader.ml \
+	process.ml \
+	main.ml
 
 COCCI=../vanillacocci
 
 SYSLIBS=str.cma unix.cma bigarray.cma nums.cma
-LIBS=$(COCCI)/commons/commons.cma $(COCCI)/globals/globals.cma $(COCCI)/parsing_c/parsing_c.cma
 
-MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c
-INCLUDEDIRS=$(COCCI)/commons $(COCCI)/commons/ocamlextra $(COCCI)/globals $(COCCI)/commons/ocollection $(COCCI)/globals $(COCCI)/parsing_c
+LIBS=$(COCCI)/commons/commons.cma $(COCCI)/globals/globals.cma $(COCCI)/parsing_cocci/cocci_parser.cma $(COCCI)/parsing_c/parsing_c.cma
+
+MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c $(COCCI)/parsing_cocci
+INCLUDEDIRS=$(COCCI)/commons $(COCCI)/commons/ocamlextra $(COCCI)/globals $(COCCI)/commons/ocollection $(COCCI)/globals $(COCCI)/parsing_c $(COCCI)/parsing_cocci
 
 ##############################################################################
 # Generic variables
@@ -38,9 +44,9 @@ OCAMLCFLAGS=-dtypes -custom -w A
 # This flag is also used in subdirectories so don't change its name here.
 OPTFLAGS=-dtypes
 
-# the OPTBIN variable is here to allow to use ocamlc.opt instead of 
+# the OPTBIN variable is here to allow to use ocamlc.opt instead of
 # ocaml, when it is available, which speeds up compilation. So
-# if you want the fast version of the ocaml chain tools, set this var 
+# if you want the fast version of the ocaml chain tools, set this var
 # or setenv it to ".opt" in your startup script.
 OPTBIN=
 
@@ -81,6 +87,9 @@ clean::
 
 clean::
 	set -e; for i in $(MAKESUBDIRS); do $(MAKE) -C $$i clean; done
+
+localclean:
+	rm -f $(TARGET) $(TARGET).top *~ .*~ *.exe *.cm[iox] *.o *.annot
 
 ##############################################################################
 # Generic ocaml rules

@@ -1,4 +1,5 @@
 deckard/deckard
+.depend
 *.so
 *.annot
 *.cmo

@@ -16,9 +16,7 @@ val ( +> ) : 'a -> ('a -> 'b) -> 'b
 val verbose : bool ref
 
 (* vseq is the sequence of vectors to be considered for merging *)
-val vseq : Charv.charv list ref
+val vseq : (Charv.charv * Deckard_types.ast_c_anything list * int) list ref
 
 (* vstore is a store for all vectors *)
-val vstore : Charv.charv list ref
-
-val dimensions : int
+val vstore : (Charv.charv * Deckard_types.ast_c_anything list) list ref

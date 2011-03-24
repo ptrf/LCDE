@@ -21,4 +21,5 @@ let (+>) o f = f o
 let vseq = ref []
 let vstore = ref []
 
-let dimensions = 42
+(* moved to Deckard_types
+let dimensions = 42 *)

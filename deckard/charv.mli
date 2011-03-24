@@ -9,6 +9,7 @@ type charv = int list
 
 (* Create characteristic vector *)
 val vcreate : int -> charv
+val cvcreate : Deckard_types.qlp -> charv
 
 (* Addition of characteristic vectors *)
 val ( +: ) : charv -> charv -> charv
@@ -18,6 +19,8 @@ val vtokencount : charv -> int
 
 (* Increment index in characteristic vector *)
 val vincr : charv -> int -> charv
+val cvincr : charv -> Deckard_types.qlp -> charv
 
 (* Get value at index in characteristic vector  *)
 val vindex : charv -> int -> int
+val cvindex : charv -> Deckard_types.qlp -> int
