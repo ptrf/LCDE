@@ -1,9 +1,0 @@
-RESULT = deckard.ocamlmakefile
-SOURCES = \
-  context.mli context.ml \
-  charv.mli charv.ml \
-  reader.ml
-
-OCAMLMAKEFILE = OCamlMakefile
-include $(OCAMLMAKEFILE)
-
