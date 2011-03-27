@@ -14,13 +14,20 @@ SRC=context.mli context.ml \
 	main.ml
 
 COCCI=../vanillacocci
+OCAMLGSLSRC=../ocamlgsl-0.6.0
+OCAMLGSL=../gsl
 
 SYSLIBS=str.cma unix.cma bigarray.cma nums.cma
 
-LIBS=$(COCCI)/commons/commons.cma $(COCCI)/globals/globals.cma $(COCCI)/parsing_cocci/cocci_parser.cma $(COCCI)/parsing_c/parsing_c.cma
+LIBS=$(COCCI)/commons/commons.cma $(COCCI)/globals/globals.cma \
+	 $(COCCI)/parsing_cocci/cocci_parser.cma $(COCCI)/parsing_c/parsing_c.cma \
+	 $(OCAMLGSL)/gsl.cma
 
-MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c $(COCCI)/parsing_cocci
-INCLUDEDIRS=$(COCCI)/commons $(COCCI)/commons/ocamlextra $(COCCI)/globals $(COCCI)/commons/ocollection $(COCCI)/globals $(COCCI)/parsing_c $(COCCI)/parsing_cocci
+MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c \
+			$(COCCI)/parsing_cocci $(OCAMLGSLSRC)
+
+INCLUDEDIRS=$(COCCI)/commons $(COCCI)/commons/ocamlextra $(COCCI)/globals $(COCCI)/commons/ocollection \
+			$(COCCI)/parsing_c $(COCCI)/parsing_cocci $(OCAMLGSL)
 
 ##############################################################################
 # Generic variables
