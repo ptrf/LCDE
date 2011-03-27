@@ -7,7 +7,8 @@ module Cv = Charv
 module P = Process
 
 
-let testfile = "/Users/ptrf/Dropbox/KU/Datalogi/Bachelorprojekt/work/code/LCDE/deckard/stage1.c"
+let testfile =
+    "/Users/ptrf/Dropbox/KU/Datalogi/Bachelorprojekt/work/code/LCDE/deckard/othread.c"
 
 let parseresult = R.read_file testfile
 let parseresult_unpacked = List.map fst parseresult

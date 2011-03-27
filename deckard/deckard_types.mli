@@ -457,6 +457,8 @@ type ast_c_anything =
   | Toplevel of A.toplevel
   | Declaration of A.declaration
   | Definition of A.definition
+  | Cpp_directive of A.cpp_directive
+  | Ifdef_directive of A.ifdef_directive
   | Onedecl of A.onedecl
   | Name of A.name
   | Initialiser of A.initialiser
@@ -587,5 +589,17 @@ type qlp =
   | Qvolatile
   | Qargument
   | Qtypeof
+  | Qifdefdirective
+  | Qifdef
+  | Qifdefelseif
+  | Qifdefelse
+  | Qifdefendif
+  | Qcppdirective
+  | Qcppdefine
+  | Qcppinclude
+  | Qcppundef
+  | Qcpppragmaandco
+  | Qcppdefinevar
+  | Qcppdefinefun
 val mapToIndex : qlp -> int
 val dimensions : int

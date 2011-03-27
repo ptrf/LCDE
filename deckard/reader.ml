@@ -17,4 +17,4 @@ let parse_and_annotate_files files =
     (parsed,annotated)
     *)
 
-let read_file = parse_file
+let read_file = (fun x -> annotate_pgm (parse_file x))

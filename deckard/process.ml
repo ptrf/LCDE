@@ -36,7 +36,7 @@ let store e v =
     C.vstore := (v,e) :: !C.vstore
 
 let store_mergeable level e v =
-    C.vseq := (v,e,level) :: !C.vseq;
+    (if level <> 0 then C.vseq := (v,e,level) :: !C.vseq);
     store e v
 
 (* symbols
@@ -81,18 +81,86 @@ let rec pprogram tls =
  * Invoked by list iteration, so we discard any returns.
  *)
 
-and ptoplevel = fun d ->
-    match d with
+and ptoplevel toplevel =
+    let level = 1 in
+    match toplevel with
     | Declaration (decl) ->
-            let _ = pdeclaration 1 decl in
+            let _ = pdeclaration level decl in
             ()
     | Definition (def) ->
-            pdefinition 1 def;
+            let _ = pdefinition level def in
             ()
-    (* the following only contains info stuff *)
+    | CppTop c ->
+            let _ = pcpptop level c in
+            ()
+    | IfdefTop i ->
+            let _ = pifdeftop level i in
+            ()
+    | MacroTop (m,_,_) ->
+            pmacrotop level m;
+            ()
+    (* the following only contains info stuff - NotParsedCorrectly probably out
+     * to emit some warning of sorts *)
     | FinalDef _ | EmptyDef _ | NotParsedCorrectly _ -> ()
-    | CppTop _ | IfdefTop _ | MacroTop _ -> failwith (debug_implthis ("ptoplevel" ^ Dumper.dump d))
 
+(* CPP *)
+
+(* pcpptop, pcppdefine, pcppdefineval
+ *)
+
+and pcpptop level directive =
+    let v_dir = (match directive with
+    | Define d -> vCppDefine +: (pcppdefine d)
+    | Include _ -> vCppInclude
+    | Undef _ -> vCppUndef
+    | PragmaAndCo _ -> vCppPragmaAndCo) in
+    let v = v_dir +: vCppDirective in
+    store_mergeable level [Dt.Cpp_directive directive] v;
+    v
+
+and pcppdefine = fun (_,(kind,value)) ->
+    let v_k = (match kind with
+        | DefineVar -> vCppDefineVar
+        | DefineFunc _ -> vCppDefineFun
+    ) in
+    let v_v = pcppdefineval value in
+    v_v +: v_k
+
+and pcppdefineval v =
+    match v with
+    | DefineExpr e -> (pexpr e)
+    | DefineStmt s -> (pstatement 0 s)
+    | DefineType t -> (pfullType t)
+    | DefineDoWhileZero ((s, e),_) ->
+            (pstatement 0 s) +: (pexpr e)
+    | DefineFunction d -> (pdefinition 0 d)
+    | DefineInit i -> (pinitialiser i)
+    | DefineText _ | DefineEmpty | DefineTodo -> nothing
+
+(* pifdeftop, pifdefkind
+ *)
+
+and pifdeftop level directive =
+    let v_ifdef = (match directive with
+    | IfdefDirective ((kind,_),_) ->
+            pifdefkind kind
+    ) in
+    let v = v_ifdef +: vIfdefDirective in
+    store_mergeable level [Dt.Ifdef_directive directive] v;
+    v
+
+and pifdefkind kind =
+    match kind with
+    | Ifdef -> vIfdef
+    | IfdefElseif -> vIfdefElseif
+    | IfdefElse -> vIfdefElse
+    | IfdefEndif -> vIfdefEndif
+
+(* pmacrotop
+ *)
+
+and pmacrotop _ _ =
+    ()
 
 (* DECLARATIONS *)
 
@@ -134,7 +202,7 @@ and ponedecl decl =
         | Some (_,opt) -> Some opt
     in
     let name_and_init = match decl.v_namei with
-        | None -> failwith debug_sadv
+        | None -> None (* failwith (debug_sadv ^ " ||   " ^ (Dumper.dump decl))*)
         | Some (n,i) -> Some (n, extract_init i)
     in
     let v_name_and_init = match name_and_init with
@@ -233,8 +301,11 @@ and pexpr expression =
             let v_t = pfullType t in
             let v_e = pexpr e in
             vCast +: v_t +: v_e
-    | StatementExpr _ | Constructor _ | ParenExpr _ -> failwith (debug_implthis
-                                                                    "pexpr")
+    | StatementExpr _ -> failwith (debug_implthis "pexpr - stmtexpr " ^
+    (Dumper.dump expression))
+    | Constructor _ ->  failwith (debug_implthis "pexpr - constructor " ^
+    (Dumper.dump expression))
+    | ParenExpr e -> pexpr e
 
 (* pargument
  *
@@ -309,7 +380,6 @@ and plogicalOp op = match op with
 (* pdefinition
  *
  * Function definitions are processed by pdefinition.
- * Returns unit since it's invoked by a List.iter-construct.
  *
  * NOTE: Take care if code is adapted to support nested function definitions
  *)
@@ -319,14 +389,13 @@ and pdefinition level definition =
     let fundef = fst definition in
     let v_name = pname (fundef.f_name) in
     let v_type = pfunctionType (fundef.f_type) in
-    (* compound statements in function defs mergeable? TODO *)
     let v_body = pcompound (level+1) (fundef.f_body) in
     match (fundef.f_old_c_style) with
     | Some _ -> failwith (debug_implthis "pdefinition")
     | None ->
             let v = vDefinition +: v_name +: v_type +: v_body in
             store_mergeable level [def_packed] v;
-            ()
+            v
 
 (* pfunctionType
  *
@@ -365,7 +434,7 @@ and pparameterType param =
 and pstatement level statement =
     let statement_packed = Dt.Statement statement in
     let statementbis = fst statement in
-    let newlevel = level+1 in
+    let newlevel = if level <> 0 then level+1 else level in
     let v = (
         match statementbis with
         | Labeled (l) -> (plabeled newlevel l) +: vLabeled
@@ -432,7 +501,9 @@ and pselection newlevel selection =
 and pcompound newlevel statement_sequencables =
     let pst_sq st_sq = match st_sq with
         | StmtElem (s) -> pstatement newlevel s
-        | CppDirectiveStmt _ | IfdefStmt _ | IfdefStmt2 _ -> failwith
+        | CppDirectiveStmt s -> (pcpptop newlevel s)
+        | IfdefStmt i -> pifdeftop newlevel i
+        | IfdefStmt2 _ -> failwith
         (debug_implthis "pcompound")
     in
     List.fold_left (fun x y -> x +: (pst_sq y)) nothing statement_sequencables
@@ -492,8 +563,8 @@ and ptypeCbis t =
     | TypeName (n, f) ->
             (pname n) +: (match f with | Some (ft) -> pfullType ft | None ->
                 nothing )
-    | ParenType (_) ->
-            failwith debug_sadv
+    | ParenType (t) -> pfullType t
+            (*failwith (debug_sadv ^ " || " ^ (Dumper.dump lol))*)
     | TypeOfExpr (e) ->
             (pexpr e) +: vTypeOf
     | TypeOfType (t) ->

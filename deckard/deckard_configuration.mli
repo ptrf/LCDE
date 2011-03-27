@@ -16,6 +16,18 @@ val vName : Cv.charv
 val vLiteral : Cv.charv
 val vDeclaration : Cv.charv
 val vDefinition : Cv.charv
+val vIfdefDirective : Cv.charv
+val vIfdef : Cv.charv
+val vIfdefElseif : Cv.charv
+val vIfdefElse : Cv.charv
+val vIfdefEndif : Cv.charv
+val vCppDirective : Cv.charv
+val vCppDefine : Cv.charv
+val vCppInclude : Cv.charv
+val vCppUndef : Cv.charv
+val vCppPragmaAndCo : 'a list
+val vCppDefineVar : Cv.charv
+val vCppDefineFun : Cv.charv
 val vInitialiser : Cv.charv
 val vArgument : 'a list
 val vLabeled : Cv.charv

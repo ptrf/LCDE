@@ -48,6 +48,22 @@ let vLiteral = create Qliteral
 let vDeclaration = create Qdeclaration
 let vDefinition = create Qfundefinition
 
+(* preprocessor constructs *)
+let vIfdefDirective = create Qifdefdirective
+let vIfdef = create Qifdef
+let vIfdefElseif = create Qifdefelseif
+let vIfdefElse = create Qifdefelse
+let vIfdefEndif = create Qifdefendif
+
+let vCppDirective = create Qcppdirective
+let vCppDefine = create Qcppdefine
+let vCppInclude = create Qcppinclude
+let vCppUndef = create Qcppundef
+let vCppPragmaAndCo = nothing (* create Qcpppragmaandco *)
+
+let vCppDefineVar = create Qcppdefinevar
+let vCppDefineFun = create Qcppdefinefun
+
 (* declarations constructs *)
 let vInitialiser = create Qinitialiser
 
