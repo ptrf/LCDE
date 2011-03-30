@@ -14,6 +14,9 @@ val cvcreate : Deckard_types.qlp -> charv
 (* Addition of characteristic vectors *)
 val ( +: ) : charv -> charv -> charv
 
+(* Inner product with float representation *)
+val innerproduct : float list -> charv -> float
+
 (* Get token count of characteristic vector *)
 val vtokencount : charv -> int
 
@@ -24,3 +27,4 @@ val cvincr : charv -> Deckard_types.qlp -> charv
 (* Get value at index in characteristic vector  *)
 val vindex : charv -> int -> int
 val cvindex : charv -> Deckard_types.qlp -> int
+

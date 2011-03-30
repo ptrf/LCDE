@@ -11,6 +11,7 @@ SRC=context.mli context.ml \
 	infixes.ml \
 	reader.ml \
 	process.ml \
+	lsh.ml \
 	main.ml
 
 COCCI=../vanillacocci
@@ -73,7 +74,7 @@ all: rec $(EXEC)
 opt: rec.opt $(EXEC).opt
 
 rec:
-	set -e; for i in $(MAKESUBDIRS); do $(MAKE) -C $$i all; done 
+	set -e; for i in $(MAKESUBDIRS); do $(MAKE) -C $$i all; done ; $(MAKE) -C $(OCAMLGSLSRC) install;
 rec.opt:
 	set -e; for i in $(MAKESUBDIRS); do $(MAKE) -C $$i all.opt; done 
 

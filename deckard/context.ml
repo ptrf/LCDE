@@ -6,6 +6,9 @@
  * DECKARD algorithm
  *)
 
+(* types *)
+type vstore_t = Charv.charv * Deckard_types.ast_c_anything list
+
 (* Behavioral stuff *)
 
 let verbose = ref false
@@ -21,5 +24,11 @@ let (+>) o f = f o
 let vseq = ref []
 let vstore = ref []
 
-(* moved to Deckard_types
-let dimensions = 42 *)
+(* Variables affecting random number generation *)
+(* not used
+let sigma = 1.
+*)
+
+(* LSH initialization variables *)
+let r = ref 10.
+let c = ref 1.5

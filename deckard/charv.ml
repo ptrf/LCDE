@@ -44,6 +44,20 @@ let ( +: ) left right =
     in
     List.rev (adder left right [])
 
+(* Inner product *)
+
+let innerproduct a v =
+    let rec ip a v acc =
+        match a with
+        | x::xs -> (
+            match v with
+            | y::ys -> ip xs ys (((float_of_int y) *. x) +. acc)
+            | [] -> acc
+            )
+            | [] -> acc
+    in
+    ip a v 0.
+
 (* Get token count of characteristic vector *)
 let vtokencount v =
     List.fold_left ( + ) 0 v
