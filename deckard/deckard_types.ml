@@ -2,50 +2,15 @@
 
 module A = Ast_c
 
-(* TYPES TO COPE WITH COCCINELLE
- *
- * This
- *
- *)
+(*  Encapsulate *)
 
 type ast_c_anything =
-    | Program of A.program
-    | Toplevel of A.toplevel
     | Declaration of A.declaration
     | Definition of A.definition
     | Cpp_directive of A.cpp_directive
     | Ifdef_directive of A.ifdef_directive
-    | Onedecl of A.onedecl
-    | Name of A.name
-    | Initialiser of A.initialiser
-    | FullType of A.fullType
-    | Initialiserbis of A.initialiserbis
     | Expression of A.expression
-    | Definitionbis of A.definitionbis
-    | FunctionType of A.functionType
-    | Compound of A.compound
-    | ParameterType of A.parameterType
-    | Statement_sequencable of A.statement_sequencable
     | Statement of A.statement
-    | Labeled of A.labeled
-    | ExprStatement of A.exprStatement
-    | Selection of A.selection
-    | Iteration of A.iteration
-    | Jump of A.jump
-    | Expressionbis of A.expressionbis
-    | Constant of A.constant
-    | ArithOp of A.arithOp
-    | AssignOp of A.assignOp
-    | FixOp of A.fixOp
-    | LogicalOp of A.logicalOp
-    | UnaryOp of A.unaryOp
-    | BinaryOp of A.binaryOp
-    | TypeQualifier of A.typeQualifier
-    | TypeCbis of A.typeCbis
-    | ConstExpression of A.constExpression
-    | BaseType of A.baseType
-    | StructUnion of A.structUnion
-    | StructType of A.structType
 
 (* type qlp: the q-level patterns
  *

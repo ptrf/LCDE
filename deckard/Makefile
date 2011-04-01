@@ -7,12 +7,14 @@ TARGET=deckard
 SRC=context.mli context.ml \
 	deckard_types.mli deckard_types.ml \
 	charv.mli charv.ml \
-	deckard_configuration.mli deckard_configuration.ml \
+	deckard_configuration.ml \
 	infixes.ml \
 	reader.ml \
 	process.ml \
-	lsh.ml \
 	main.ml
+#	merge.ml \
+#	prune.ml \
+#	lsh.ml \
 
 COCCI=../vanillacocci
 OCAMLGSLSRC=../ocamlgsl-0.6.0
