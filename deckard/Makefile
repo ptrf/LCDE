@@ -11,10 +11,10 @@ SRC=context.mli context.ml \
 	infixes.ml \
 	reader.ml \
 	process.ml \
+	merge.ml \
+	prune.ml \
+	lsh.ml \
 	main.ml
-#	merge.ml \
-#	prune.ml \
-#	lsh.ml \
 
 COCCI=../vanillacocci
 OCAMLGSLSRC=../ocamlgsl-0.6.0
