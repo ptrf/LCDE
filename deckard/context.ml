@@ -8,27 +8,38 @@
 
 (* types *)
 type vstore_t = Charv.charv * Deckard_types.ast_c_anything list
+type vseq_t = Charv.charv * Deckard_types.ast_c_anything
 
 (* Behavioral stuff *)
 
 let verbose = ref false
 
 exception Dimension of string
+exception Nofiles of string
+exception ImpossiblePos of string
 
 (* Various function definitions *)
-
-let (+>) o f = f o
 
 (* Global variables and refs *)
 
 let vseq = ref []
 let vstore = ref []
 
-(* Variables affecting random number generation *)
-(* not used
-let sigma = 1.
-*)
+(* CONFIGURABILITY *)
+
+(* Min token count threshold *)
+let tc = ref 10
 
 (* LSH initialization variables *)
 let r = ref 10.
 let c = ref 1.5
+
+(* file list *)
+let files = ref ""
+
+(* clone detection within the same file *)
+let samefile = ref false
+
+(* merging properties *)
+let stride = ref 3
+let width = ref 4

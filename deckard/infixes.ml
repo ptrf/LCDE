@@ -4,3 +4,5 @@
 module C = Charv
 
 let ( +: ) = C.(+:)
+
+let ( +> ) o f = f o

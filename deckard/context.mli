@@ -5,30 +5,39 @@
 (* types *)
 
 exception Dimension of string
+exception Nofiles of string
+exception ImpossiblePos of string
 
 type vstore_t = Charv.charv * Deckard_types.ast_c_anything list
+type vseq_t = Charv.charv * Deckard_types.ast_c_anything
 
 (* function definitions *)
-
-(* cocci composition - maybe redundant here *)
-val ( +> ) : 'a -> ('a -> 'b) -> 'b
 
 (* variable definitions *)
 
 val verbose : bool ref
 
 (* vseq is the sequence of vectors to be considered for merging *)
-val vseq : (Charv.charv * Deckard_types.ast_c_anything list * int) list ref
+val vseq : (string * (vseq_t * int)) list ref
 
 (* vstore is a store for all vectors *)
-val vstore : (Charv.charv * Deckard_types.ast_c_anything list) list ref
+val vstore : vstore_t list ref
 
-(* Variables affecting random number generation *)
-(* unused
-val sigma : float
-*)
+(* CONFIGURABILITY *)
+
+(* min token count threshold *)
+val tc : int ref
 
 (* LSH initialization variables *)
 val r : float ref
 val c : float ref
 
+(* file list *)
+val files : string ref
+
+(* clone detection within the same file *)
+val samefile : bool ref
+
+(* merging properties *)
+val stride : int ref
+val width : int ref

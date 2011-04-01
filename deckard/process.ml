@@ -15,6 +15,10 @@ module Dt = Deckard_types
 module C = Context
 module Cv = Charv
 
+(* hacks *)
+let filename = ref ""
+
+
 (*
  * SHORTHANDS
  *)
@@ -36,8 +40,8 @@ let store e v =
     C.vstore := (v,e) :: !C.vstore
 
 let store_mergeable level e v =
-    (if level <> 0 then C.vseq := (v,e,level) :: !C.vseq);
-    store e v
+    (if level <> 0 then C.vseq := (!filename,((v,e),level)) :: !C.vseq);
+    store [e] v
 
 (* symbols
  *
@@ -74,6 +78,10 @@ let pname _ = vName
  *)
 
 let rec pprogram tls =
+    (* this might fail spectacularly - beware *)
+    let hd = List.hd tls in
+    filename := (Ast_c.file_of_info (List.hd (Lib_parsing_c.ii_of_toplevel
+    hd)));
     List.iter ptoplevel tls
 
 (* ptoplevel
@@ -115,7 +123,7 @@ and pcpptop level directive =
     | Undef _ -> vCppUndef
     | PragmaAndCo _ -> vCppPragmaAndCo) in
     let v = v_dir +: vCppDirective in
-    store_mergeable level [Dt.Cpp_directive directive] v;
+    store_mergeable level (Dt.Cpp_directive directive) v;
     v
 
 and pcppdefine = fun (_,(kind,value)) ->
@@ -146,7 +154,7 @@ and pifdeftop level directive =
             pifdefkind kind
     ) in
     let v = v_ifdef +: vIfdefDirective in
-    store_mergeable level [Dt.Ifdef_directive directive] v;
+    store_mergeable level (Dt.Ifdef_directive directive) v;
     v
 
 and pifdefkind kind =
@@ -185,7 +193,7 @@ and pdeclaration level decl =
             in
             (* if we are called from toplevel, we save our vector, else we let
              * pstatement save it for us *)
-            if level = 1 then store_mergeable level [decl_packed] v;
+            if level = 1 then store_mergeable level decl_packed v;
             v
             (* List.fold_ (fun x -> ponedecl level (fst x)) decls*)
     | MacroDecl _ -> failwith (debug_implthis "pdeclaration")
@@ -394,7 +402,7 @@ and pdefinition level definition =
     | Some _ -> failwith (debug_implthis "pdefinition")
     | None ->
             let v = vDefinition +: v_name +: v_type +: v_body in
-            store_mergeable level [def_packed] v;
+            store_mergeable level def_packed v;
             v
 
 (* pfunctionType
@@ -448,7 +456,7 @@ and pstatement level statement =
         "pstatement")
     )
     in
-    store_mergeable level [statement_packed] v;
+    store_mergeable level statement_packed v;
     v
 
 
