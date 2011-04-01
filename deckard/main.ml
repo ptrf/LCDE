@@ -6,6 +6,8 @@ module Dt = Deckard_types
 module Cv = Charv
 module P = Process
 module M = Merge
+module Pr = Prune
+module L = Lsh
 
 (* TODO make format strings instead :) *)
 let speclist =
@@ -38,6 +40,10 @@ let process fs =
 
 let merge () = M.merge ()
 
+let prune_first () = Pr.prune_vstore ()
+
+let lsh () = ()
+
 let main () =
     Arg.parse speclist (function _ -> ()) "Usage: ";
     if !C.files = "" then
@@ -47,7 +53,9 @@ let main () =
         print_endline ("[WARNING] The merging window is smaller than the" ^
         " stride! This may lead to weird behaviour, and is not supported.");
         process !C.files;
-        merge ()
+        merge ();
+        prune_first ();
+        lsh ()
 
 let _ = main ()
 

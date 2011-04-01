@@ -4,11 +4,7 @@ module C = Context
 module Cv = Charv
 
 let prune_tokencount l =
-    List.fold_left (fun x y ->
-                      if (List.fold_left (+) 0 (fst y)) > !C.tc then
-                          y::x
-                      else x
-    ) [] l
+    List.filter (fun x -> (List.fold_left (+) 0 (fst x)) > !C.tc) l
 
 (* prior to LSH *)
 let prune_vstore () =
