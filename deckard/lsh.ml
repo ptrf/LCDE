@@ -238,10 +238,12 @@ module LshDb = (
                         if List.mem y x then x else y::x
                     ) prep cur
             in
-            List.fold_left (fun x (g, hash) ->
+            let cc = List.fold_left (fun x (g, hash) ->
                             let inner = Hashtbl.find outer g in
                             let y = Hashtbl.find inner hash in
                             prepare y x) [] hashes
+            in
+            cc
 
     end
     :
