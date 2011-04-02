@@ -86,15 +86,20 @@ let get_file_info items =
 let report_item n =
     (match n with
     | D.Statement s ->
-            Ppc.pp_statement_simple s
+            Ppc.pp_statement_simple s;
+            flush_all ()
     | D.Declaration d ->
-            Ppc.pp_decl_simple d
+            Ppc.pp_decl_simple d;
+            flush_all ()
     | D.Definition d ->
-            Ppc.pp_toplevel_simple (A.Definition d)
+            Ppc.pp_toplevel_simple (A.Definition d);
+            flush_all ()
     | D.Cpp_directive d ->
-            Ppc.pp_toplevel_simple (A.CppTop d)
+            Ppc.pp_toplevel_simple (A.CppTop d);
+            flush_all ()
     | D.Ifdef_directive d ->
-            Ppc.pp_toplevel_simple (A.IfdefTop d)
+            Ppc.pp_toplevel_simple (A.IfdefTop d);
+            flush_all ()
     | D.Expression _ -> failwith "not implemented in main.ml")
 
 let rec print_class vs =
@@ -103,7 +108,7 @@ let rec print_class vs =
     print_endline ("File: " ^ filename ^ ", lines " ^ (string_of_int (fst s)) ^
     "-" ^ (string_of_int (fst e)) ^ "\n----");
     List.iter report_item vs;
-    print_endline "\n----\n"
+    print_endline "----\n"
 
 let rec print_each_class i classes =
     match classes with
@@ -112,12 +117,12 @@ let rec print_each_class i classes =
             (string_of_float (certainty *. 100.)) ^ "%:\n");
             List.iter (fun (_,x) -> print_class x) vs;
             print_each_class (i+1) rems
-    | [] -> print_endline "\n----\nEnd of clone class listing"
+    | [] -> print_endline "\n============\nEnd of clone class listing"
 
 let report () =
     let num_classes = List.length !clone_candidates2 in
     print_endline ("A total number of " ^ (string_of_int num_classes) ^
-    " clone classes were found\n");
+    " clone classes were found\n========\n");
     print_each_class 1 !clone_candidates2
 
 let prune_after () =

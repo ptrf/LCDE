@@ -72,10 +72,10 @@ let mk_pretty_printers
 
   let indent_if_needed st f =
     match Ast_c.unwrap_st st with
-      Compound _ -> pr_space(); f()
+    Compound _ -> pr_space(); f(); pr_nl()
     | _ ->
         (*no newline at the end - someone else will do that*)
-	start_block(); f(); pr_unindent() in
+            start_block(); f(); pr_unindent(); pr_nl() in
 
 
 
@@ -1021,6 +1021,7 @@ and pp_init (init, iinit) =
         pr_elem i1;
         statxs +> List.iter pp_statement_seq;
         pr_elem i2;
+        pr_nl ();
     | _ -> raise Impossible
 
   and pp_param_list paramst =
@@ -1327,8 +1328,8 @@ let pr_elem info =
 
 let pr_space _ = Format.print_space()
 
-let pr_nl _ = ()
-let pr_indent _ = ()
+let pr_nl _ = Format.print_newline ()
+let pr_indent _ = Format.print_space (); Format.print_space ()
 let pr_outdent _ = ()
 let pr_unindent _ = ()
 

@@ -63,7 +63,7 @@ let show_parsing_error = ref true
 
 let verbose_lexing = ref true
 let verbose_parsing = ref true
-let verbose_type    = ref true
+let verbose_type    = ref false
 let verbose_cfg    = ref true
 let verbose_annotater = ref true
 let verbose_unparsing = ref true
