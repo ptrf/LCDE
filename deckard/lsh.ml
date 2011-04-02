@@ -48,7 +48,7 @@ module M = (
         let compute_prob x =
             let gslfun = pdf_content x in
             let ws = Gsl_integration.make_ws 1000 in
-            let {Gsl_fun.res = res; Gsl_fun.err} = Gsl_integration.qags gslfun
+            let {Gsl_fun.res = res; Gsl_fun.err=err} = Gsl_integration.qags gslfun
             ~a:0. ~b:!C.r ~epsabs:0. ~epsrel:1e-7 ws in
             (res, ( err, Gsl_integration.size ws))
     end
