@@ -23,7 +23,7 @@ OCAMLGSL=../gsl
 SYSLIBS=str.cma unix.cma bigarray.cma nums.cma
 
 LIBS=$(COCCI)/commons/commons.cma $(COCCI)/globals/globals.cma \
-	 $(COCCI)/parsing_cocci/cocci_parser.cma $(COCCI)/parsing_c/parsing_c.cma \
+	 $(COCCI)/parsing_cocci/cocci_parser.cma $(COCCI)/parsing_c/parsing_c.cma $(COCCI)/parsing_c/pretty_print_c.cmo \
 	 $(OCAMLGSL)/gsl.cma
 
 MAKESUBDIRS=$(COCCI)/commons $(COCCI)/globals $(COCCI)/menhirlib $(COCCI)/parsing_cocci $(COCCI)/parsing_c \

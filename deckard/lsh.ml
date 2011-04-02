@@ -245,11 +245,37 @@ module LshDb = (
             in
             cc
 
+        let get_all t =
+            let create_list_of_vs = fun v _ acc -> v::acc in
+            let vs = Hashtbl.fold create_list_of_vs t.map [] in
+            List.map (fun v -> (v,query t v)) vs
+
     end
     :
     sig
         type t
         val create : C.vstore_t list -> t
         val query : t -> C.vstore_t -> C.vstore_t list
+        val get_all : t -> (C.vstore_t * C.vstore_t list) list
     end
 )
+
+let get_all_classes db =
+    let sort_inner pairs =
+        List.map (
+            fun (v,vs) ->
+                (v, List.sort (fun (_,x) (_,y) -> compare x y) vs)
+                ) pairs
+    in
+    (*let remove_dups xs =
+        let remove_dup y ys =
+            List.filter (fun t -> t<>y) ys
+        in
+        match xs with
+        | l::ls -> l::(remove_dup l ls)
+        | [] -> []
+    in
+    *)
+    let cc = List.filter (fun x -> List.length (snd x) > 1) (LshDb.get_all db) in
+    sort_inner cc
+
